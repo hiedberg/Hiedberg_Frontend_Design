@@ -2,7 +2,7 @@ import merge from 'lodash/merge';
 import ReactApexChart from 'react-apexcharts';
 // @mui
 import { useTheme, styled } from '@mui/material/styles';
-import { Card, CardHeader } from '@mui/material';
+import { Card, CardHeader, Grid } from '@mui/material';
 // utils
 import { fNumber } from '../../../../utils/formatNumber';
 //
@@ -31,7 +31,7 @@ const ChartWrapperStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-const CHART_DATA = [10, 15, 20];
+const CHART_DATA = [10, 15, 20, 50];
 
 export default function AppCurrentDownload() {
   const theme = useTheme();
@@ -43,43 +43,34 @@ export default function AppCurrentDownload() {
       theme.palette.primary.main,
       theme.palette.primary.dark,
     ],
-    labels: ['Active', 'Pending', 'Completed'],
     stroke: { colors: [theme.palette.background.paper] },
     legend: { floating: true, horizontalAlign: 'center' },
-    tooltip: {
-      fillSeriesColor: false,
-      y: {
-        formatter: (seriesName) => fNumber(seriesName),
-        title: {
-          formatter: (seriesName) => `${seriesName}`,
-        },
-      },
-    },
     plotOptions: {
-      pie: {
-        donut: {
-          size: '90%',
-          labels: {
-            value: {
-              formatter: (val) => fNumber(val),
-            },
-            total: {
-              formatter: (w) => {
-                const sum = w.globals.seriesTotals.reduce((a, b) => a + b, 0);
-                return fNumber(sum);
-              },
+      radialBar: {
+        dataLabels: {
+          value: {
+            formatter: (val) => fNumber(val),
+          },
+          total: {
+            formatter: (w) => {
+              const sum = w.globals.seriesTotals.reduce((a, b) => a + b, 0);
+              return fNumber(sum);
             },
           },
-        },
-      },
+        }
+      }
     },
   });
 
   return (
     <Card>
-      <CardHeader title="Tasks Overview" />
+      <CardHeader title="Pending Tasks" subheader='Detail Information about your activities' />
       <ChartWrapperStyle dir="ltr">
-        <ReactApexChart type="donut" series={CHART_DATA} options={chartOptions} height={280} />
+        <Grid container spacing={3}>
+          <Grid>
+            <ReactApexChart options={chartOptions} series={CHART_DATA} type="radialBar" height={280} />
+          </Grid>
+        </Grid>
       </ChartWrapperStyle>
     </Card>
   );

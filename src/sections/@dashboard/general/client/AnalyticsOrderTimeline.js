@@ -16,14 +16,14 @@ export default function AnalyticsOrderTimeline() {
   useEffect(() => {
     const initialize = async () => {
       const accessToken = window.localStorage.getItem('accessToken');
-      fetch('http://localhost:5000/v1/users/getFaqs', {
+      fetch(`${process.env.REACT_APP_SERVER_URL}/users/getFaqs`, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${accessToken}`,
         },
       })
         .then((response) => {
-          console.log(response);
+          console.log('getFAQ---->', response);
         })
         .catch((error) => {
           console.log(error);
@@ -41,7 +41,7 @@ export default function AnalyticsOrderTimeline() {
         },
       }}
     >
-      <CardHeader title="Pending Tasks" />
+      <CardHeader title="Pending Tasks" subheader='Detail Information about your activities' />
       <CardContent>
         <Timeline>
           {_analyticOrderTimeline.map((item, index) => (
